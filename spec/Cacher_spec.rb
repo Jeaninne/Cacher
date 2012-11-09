@@ -19,6 +19,7 @@ module Cacher
 			it "should add file in the cache" do
 			@new_cache.add_to_cache(@file1)		
 			@new_cache.key?(@file1).should be_true
+			@new_cache.cch.size.should eq(1)
 			end				
 		end
 
@@ -27,6 +28,7 @@ module Cacher
 			@new_cache.add_to_cache(@file1)		
 			@new_cache.delete_from_cache(@file1)
 			@new_cache.key?(@file1).should be_false
+			@new_cache.cch.size.should eq(0)
 			end
 		end
 
