@@ -43,6 +43,39 @@ module Cacher
     			end
 		end
 
+		context "find file with last access" do
+			it "should find buffer with most 'fresh' access" do
+			@new_cache.add_to_cache(@file2)	
+			@new_cache.add_to_cache(@file1)	
+			@new_cache.find_new_access(@file1).class.should eq(Buffer)
+			end
+			it "should return nil if the cache is empty" do
+			@new_cache.find_new_access(@file2).should be_nil
+    			end
+		end
+
+		context "find file with oldest access" do
+			it "should find buffer with oldest access" do
+			@new_cache.add_to_cache(@file2)	
+			@new_cache.add_to_cache(@file1)	
+			@new_cache.find_old_access(@file1).class.should eq(Buffer)
+			end
+			it "should return nil if the cache is empty" do
+			@new_cache.find_old_access(@file2).should be_nil
+    			end
+		end
+
+		context "find file with the least number of accesses" do
+			it "should find buffer with the least number of accesses" do
+			@new_cache.add_to_cache(@file2)	
+			@new_cache.add_to_cache(@file1)	
+			@new_cache.find_rarely_access(@file1).class.should eq(Buffer)
+			end
+			it "should return nil if the cache is empty" do
+			@new_cache.find_rarely_access(@file2).should be_nil
+    			end
+		end
+
 		context "full cache" do
 			it "should return 'true' if the cache is full" do
 			@new_cache.add_to_cache(@file1)
