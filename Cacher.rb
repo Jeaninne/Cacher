@@ -45,7 +45,7 @@ module Cacher
 	attr_accessor :created_at, :last_accessed, :accesses_count, :data
 		def initialize(path_to_file)
 			@created_at = Time.new
-#			@last_accessed
+			@last_accessed = Time.new
 			@accesses_count = 1
 #			@data
 		end
@@ -53,7 +53,9 @@ module Cacher
 		def rewrite(path_to_file)
 		end
 
-		def change_access_time 
+		def change_access_time
+			@last_accessed = Time.new
+			@accesses_count += 1
 		end
 		
 	end
@@ -62,7 +64,7 @@ module Cacher
 end
 
 class Cacher::File < File
-	def open(file, mode)
+	def read(file)
 	end
 
 end
