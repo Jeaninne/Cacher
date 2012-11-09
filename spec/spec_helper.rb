@@ -1,4 +1,4 @@
-Dir[File.expand_path("./lib/*.rb")].each {|f| require f}
+Dir[File.expand_path("./*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
 
