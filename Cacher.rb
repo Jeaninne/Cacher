@@ -70,6 +70,7 @@ module Cacher
 		def rewrite(path_to_file)
 			@last_accessed = Time.new
 			@accesses_count += 1
+			@data = File.open(path_to_file){ |file| file.read_from_file }
 		end
 
 		def change_access_time
@@ -100,17 +101,26 @@ end
 
 class Cacher::File < File
   	alias :read_from_file :read
+
 	def read(cache)
+#		raise "Location does not exist" unless absolute_path(self).exist?
 		if cache.key?(self.path)
-		then 
+		then
 		cache[self.path].change_access_time
 		else
 		cache.add_to_cache(self.path)
 		end
 	end
 
-	def write(cache)
-
+	def write(string, cache)
+		File.open(self.path, "w") { |file|	file.write(string)	}
+		if cache.key?(self.path)
+		then 
+		cache[self.path].rewrite(self.path)
+		else
+		cache.add_to_cache(self.path)
+		end
+		
 	end
 
 end

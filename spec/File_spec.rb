@@ -21,7 +21,7 @@ module Cacher
 		context "write" do
 			it "should write text in file" do
 			@new_cache.add_to_cache(@file3)
-			File.open(@file3){ |file| file.write(@new_cache) }
+			File.open(@file3){ |file| file.write("abracadabra!", @new_cache) }
 			@new_cache[@file3].accesses_count.should eq(2)
 			end
 		end
