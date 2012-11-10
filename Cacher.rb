@@ -51,6 +51,13 @@ module Cacher
 		end
 
 		def find_rarely_access()
+			max_a = 1
+			max_v = nil
+			@cch.each_key{|key| if cch[key].accesses_count>max_a 
+				then max_a = cch[key].accesses_count
+					max_v = cch[key]
+				else  end}
+			return max_v
 		end
 
 	end
