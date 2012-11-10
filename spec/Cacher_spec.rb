@@ -4,9 +4,9 @@ module Cacher
 	describe Cache do
 		before(:each) do
 			@new_cache = Cache.new(3)
-			@file1 ="../test/new.txt"
-			@file2 ="../test/new1.txt"
-			@file3 ="../test/new2.txt"
+			@file1 ="./test/new.txt"
+			@file2 ="./test/second.txt"
+			@file3 ="./test/third.txt"
 		end
 		context "initialize" do
 			it "should initialize a cache with given size" do
@@ -66,11 +66,13 @@ module Cacher
     			end
 		end
 
+#TODO: write!!!
 #		context "find file with the least number of accesses" do
 #			it "should find buffer with the least number of accesses" do
 #			@new_cache.add_to_cache(@file2)	
 #			@new_cache.add_to_cache(@file1)	
-#			@new_cache.find_rarely_access.class.should eq(Buffer)
+#
+#			@new_cache.find_rarely_access.should eq(@new_cache[@file1])
 #			end
 #			it "should return nil if the cache is empty" do
 #			@new_cache.find_rarely_access.should be_nil

@@ -58,10 +58,13 @@ module Cacher
 	class Buffer
 	attr_accessor :created_at, :last_accessed, :accesses_count, :data
 		def initialize(path_to_file)
+			return raise if path_to_file.class != String
 			@created_at = Time.new
 			@last_accessed = Time.new
 			@accesses_count = 1
-#			@data
+			@data = File.open(path_to_file){ |file| file.read_from_file }
+		rescue 
+		puts "There is no such filename"
 		end
 
 		def rewrite(path_to_file)
@@ -76,18 +79,38 @@ module Cacher
 		
 	end
 
+#вытесняется буфер, неиспользованный дольше всех;
+	class LRU < Cache
+		def clear_up_space
+		end
+	end
+
+# вытесняется последний использованный буфер
+	class MRU < Cache
+		def clear_up_space
+		end
+	end
+
+	class LFU < Cache
+		def clear_up_space
+		end
+	end
 
 end
 
 class Cacher::File < File
-	def read(file)
-	
-	super
+  	alias :read_from_file :read
+	def read(cache)
+		if cache.key?(self.path)
+		then 
+		cache[self.path].change_access_time
+		else
+		cache.add_to_cache(self.path)
+		end
 	end
 
-	def write(file)
-	
-	super
+	def write(cache)
+
 	end
 
 end
