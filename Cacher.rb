@@ -30,10 +30,24 @@ module Cacher
 			@cch.size < @size ? (return false) : (return true)
 		end
 
-		def find_new_access()
+		def find_new_access
+			min_t = Time.now
+			min_v = nil
+			@cch.each_key{|key| if cch[key].last_accessed<min_t 
+				then min_t = cch[key].last_accessed 
+					min_v = cch[key]
+				else  end}
+			return min_v
 		end
 
 		def find_old_access()
+			max_t = Time.at(0)
+			max_v = nil
+			@cch.each_key{|key| if cch[key].last_accessed>max_t 
+				then max_t = cch[key].last_accessed 
+					max_v = cch[key]
+				else  end}
+			return max_v
 		end
 
 		def find_rarely_access()
@@ -51,6 +65,8 @@ module Cacher
 		end
 
 		def rewrite(path_to_file)
+			@last_accessed = Time.new
+			@accesses_count += 1
 		end
 
 		def change_access_time
@@ -65,6 +81,13 @@ end
 
 class Cacher::File < File
 	def read(file)
+	
+	super
+	end
+
+	def write(file)
+	
+	super
 	end
 
 end
