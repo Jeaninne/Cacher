@@ -21,15 +21,23 @@ module Cacher
 			it "should rewrite file in buffer correctly" do
 			new_buffer = Buffer.new(@file1)
 			new_buffer.rewrite(@file2)
+			new_buffer.accesses_count.should eq(2)
 			new_buffer.data.should eq("second file\n")
 			end
 			it "should throw an exception if index is not string" do
 			a = true
-			Buffer.rewrite(a).should raise_error()
+			buffer = Buffer.new(@file1)
+			buffer.rewrite(a).should raise_error()
 			end
 		end
 		
-
+		context "change access time" do
+			it "should change access time in buffer" do
+			new_buffer = Buffer.new(@file1)
+			new_buffer.change_access_time
+			new_buffer.accesses_count.should eq(2)
+			end
+		end
 
 	end
 end

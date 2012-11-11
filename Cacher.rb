@@ -40,7 +40,7 @@ module Cacher
 			return min_v
 		end
 
-		def find_old_access()
+		def find_old_access
 			max_t = Time.at(0)
 			max_v = nil
 			@cch.each_key{|key| if cch[key].last_accessed>max_t 
@@ -50,7 +50,7 @@ module Cacher
 			return max_v
 		end
 
-		def find_rarely_access()
+		def find_rarely_access
 			max_a = 1
 			max_v = nil
 			@cch.each_key{|key| if cch[key].accesses_count>max_a 
@@ -69,14 +69,17 @@ module Cacher
 			@created_at, @last_accessed  = Time.new, Time.new
 			@accesses_count = 1
 			@data = File.open(path_to_file){ |file| file.read_from_file }
-		rescue 
-		puts "There is no such filename"
+			rescue 
+			puts "There is no such filename"
 		end
 
 		def rewrite(path_to_file)
+			return raise if path_to_file.class != String
 			@last_accessed = Time.new
 			@accesses_count += 1
 			@data = File.open(path_to_file){ |file| file.read_from_file }
+			rescue 
+			puts "There is no such filename"
 		end
 
 		def change_access_time
@@ -89,17 +92,20 @@ module Cacher
 #вытесняется буфер, неиспользованный дольше всех;
 	class LRU < Cache
 		def clear_up_space
+#		self.delete(self.key(self.find_old_access))
 		end
 	end
 
 # вытесняется последний использованный буфер
 	class MRU < Cache
 		def clear_up_space
+#		self.delete(self.key(self.find_new_access))
 		end
 	end
 
 	class LFU < Cache
 		def clear_up_space
+#		self.delete(self.key(self.find_rarely_access))
 		end
 	end
 
@@ -109,7 +115,6 @@ class Cacher::File < File
   	alias :read_from_file :read
 
 	def read(cache)
-#		raise "Location does not exist" unless absolute_path(self).exist?
 		if cache.key?(self.path)
 		then
 		cache[self.path].change_access_time
@@ -119,11 +124,12 @@ class Cacher::File < File
 	end
 
 	def write(string, cache)
-		File.open(self.path, "w") { |file|	file.write(string)	}
+		File.open(self.path, "w") {|file| file.write(string)}
 		if cache.key?(self.path)
 		then 
 		cache[self.path].rewrite(self.path)
 		else
+		cache.clear_up_space if cache.is_full? #there are no tests for this case coz of method clean_up_space
 		cache.add_to_cache(self.path)
 		end
 		

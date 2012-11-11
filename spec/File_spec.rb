@@ -13,8 +13,6 @@ module Cacher
 			strng = File.open(@file1){ |file| file.read(@new_cache) }
 			@new_cache.key?(@file1).should be_true
 			end
-#			it "should " do			
-#			end
 		end
 
 #lol. how should i check that?
