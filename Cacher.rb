@@ -66,8 +66,7 @@ module Cacher
 	attr_accessor :created_at, :last_accessed, :accesses_count, :data
 		def initialize(path_to_file)
 			return raise if path_to_file.class != String
-			@created_at = Time.new
-			@last_accessed = Time.new
+			@created_at, @last_accessed  = Time.new, Time.new
 			@accesses_count = 1
 			@data = File.open(path_to_file){ |file| file.read_from_file }
 		rescue 
