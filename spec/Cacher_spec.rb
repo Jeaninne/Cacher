@@ -10,7 +10,7 @@ module Cacher
 		end
 		context "initialize" do
 			it "should initialize a cache with given size" do
-			@new_cache.should be #that's not fail:(
+			@new_cache.should be
 			@new_cache.size.should eq(3)
 			end
 		end
@@ -66,12 +66,12 @@ module Cacher
     			end
 		end
 
-#TODO: write!!!
 		context "find file with the least number of accesses" do
 			it "should find buffer with the least number of accesses" do
 			@new_cache.add_to_cache(@file2)	
 			@new_cache.add_to_cache(@file1)	
 			@new_cache[@file1].change_access_time
+			@new_cache.cch.size.should eq(2)
 			@new_cache.find_rarely_access.should eq(@new_cache[@file1])
 			end
 			it "should return nil if the cache is empty" do

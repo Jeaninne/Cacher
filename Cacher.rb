@@ -90,6 +90,7 @@ module Cacher
 	end
 
 #вытесняется буфер, неиспользованный дольше всех;
+#TODO: write this
 	class LRU < Cache
 		def clear_up_space
 #		self.delete(self.key(self.find_old_access))
@@ -97,15 +98,18 @@ module Cacher
 	end
 
 # вытесняется последний использованный буфер
+#TODO: write this
 	class MRU < Cache
 		def clear_up_space
 #		self.delete(self.key(self.find_new_access))
 		end
 	end
 
+#Thats OK? TODO:Check that out. That u-test makes me cry
 	class LFU < Cache
 		def clear_up_space
-#		self.delete(self.key(self.find_rarely_access))
+		del_value = self.find_rarely_access
+		self.cch.delete(self.cch.key(del_value))
 		end
 	end
 
