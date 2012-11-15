@@ -61,13 +61,7 @@ module Cacher
        max_v = cch[key]
      else  end}
      return max_v
-   end
-
-
-#def to_s
-#	"#@cch.created_at #@cch.last_accessed #@cch.accesses_count #@cch.data"
-#end
-	
+   end	
  end
 
 
