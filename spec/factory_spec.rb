@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Cacher
-  describe File do
+  describe Cache do
     before(:each) do
       @file1 ="./test/new.txt"
       @file2 ="./test/second.txt"
