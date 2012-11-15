@@ -1,4 +1,5 @@
 require './cacher.rb'
+
 module Cacher
 
 class File < File
@@ -12,14 +13,13 @@ class File < File
   end
 
   def write(string, cache)
-      File.open(self.path, "w") {|file| file.write(string)}
+      File.open(self.path, "w") {|file| super(string)}
       if cache.key?(self.path)
        then cache[self.path].rewrite(self.path)
        else
         cache.clear_up_space if cache.is_full? #there are no tests for this case coz of method clean_up_space
         cache.add_to_cache(self.path)
        end
-      super(string)
   end
 end
 
